@@ -38,8 +38,8 @@ funct heuristicaSmithWaterman(vector<vector<item>> matrizH, int len1, int len2, 
     max.jMax = 0;
     max.valueMax = 0;
     
-    for (int i = 1; i < len1; i++){
-        for (int j = 1; j < len2; j++){
+    for (int i = 1; i <= len1; i++){
+        for (int j = 1; j <= len2; j++){
             valorMatch = comparar(seq1[i-1], seq2[j-1]);
             diagonal = matrizH[i-1][j-1].value + valorMatch;
             sobe = matrizH[i][j-1].value - 1;
@@ -81,15 +81,16 @@ funct heuristicaSmithWaterman(vector<vector<item>> matrizH, int len1, int len2, 
 
     cout << max.iMax << " " << max.jMax << " " << max.valueMax<< endl;
     cout << result.max.iMax << " " << result.max.jMax << " " << result.max.valueMax<< endl;
+
     //copy(matrizH.begin(), matrizH.end(), back_inserter(result.matrizHtemp));
     return result;   
 };
 void printMatriz(vector<vector<item>> matrizH, int len1, int len2){
     cout << endl;
   cout << "MATRIZ" << endl;
-  for(int i = 0; i < len1; i++){
+  for(int i = 0; i <= len1; i++){
     cout << endl;
-    for(int j = 0; j < len2; j++){
+    for(int j = 0; j <= len2; j++){
       cout << " " << matrizH[i][j].value;
     }
   }
@@ -114,15 +115,15 @@ int main(){
     item itemMax;
     cout <<"pre resize" << endl;
     
-    matrizH.resize(len1);
-    for(int i = 0 ; i < len1 ; i++){
+    matrizH.resize(len1+1);
+    for(int i = 0 ; i <= len1 ; i++){
         cout << i<< endl;
-        matrizH[i].resize(len2);
+        matrizH[i].resize(len2+1);
     }
     cout <<"pre heuristica" << endl;
     funct all;
     all = heuristicaSmithWaterman(matrizH, len1, len2, seq1, seq2);
-  
+    cout <<"pre print" << endl;
     printMatriz(all.matrizHtemp, len1, len2);
 
     cout << "Max i: " << all.max.iMax << " Max j: " << all.max.jMax << endl;
@@ -139,19 +140,19 @@ int main(){
         if(itemMax.jump == 1){
             seq11 += seq1[itemMax.i-1];
             seq22 += seq2[itemMax.j-1];
-            itemMax.i --;
-            itemMax.j --;
+            itemMax.i--;
+            itemMax.j--;
         }else if(itemMax.jump == 2){
             seq11 += seq1[itemMax.i-1];
             seq22 += '-';
-            itemMax.i --;
+            itemMax.i--;
         }else if(itemMax.jump == 3){
             seq11 += '-';
             seq22 += seq2[itemMax.j-1];
-            itemMax.i --;
+            itemMax.j--;
         }
-        itemMax.value = matrizH[itemMax.i][itemMax.j].value;
-        itemMax.jump = matrizH[itemMax.i][itemMax.j].jump;
+        itemMax.value = all.matrizHtemp[itemMax.i][itemMax.j].value;
+        itemMax.jump = all.matrizHtemp[itemMax.i][itemMax.j].jump;
 
     }
     reverse(seq11.begin(), seq11.end());
