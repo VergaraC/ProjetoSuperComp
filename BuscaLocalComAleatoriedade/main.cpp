@@ -5,6 +5,9 @@
 #include <random>
 
 
+#include<fstream>
+
+
 using namespace std;
 
 
@@ -43,9 +46,9 @@ int main(){
     //seq 1
     string seq1Random;
     unsigned seed1 = rd();
-    default_random_engine generator(seed1);
-    uniform_int_distribution<int> distribution(0, len1-k);
-    int index1 = distribution(generator);
+    default_random_engine generator1(seed1);
+    uniform_int_distribution<int> distribution1(0, len1-k);
+    int index1 = distribution1(generator1);
     
     if (index1 > int(seq1.size())){
         index1 = int(seq1.size());
@@ -70,10 +73,10 @@ int main(){
     for(int i = 0; i < nSeq2; i++){
         string subSeq2;
         unsigned seed2 = rd();
-        default_random_engine generator(seed2);
-        uniform_int_distribution<int> distribution(0, len2-k);
+        default_random_engine generator2(seed2);
+        uniform_int_distribution<int> distribution2(0, len2-k);
 
-        int index2 = distribution(generator);
+        int index2 = distribution2(generator2);
         if (index2 > int(seq2.size())){
             index2 = seq2.size();
         }
