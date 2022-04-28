@@ -65,3 +65,4 @@ int main(){
     cout << "Max Score" << bestScore << endl;
     cout << "Best Seq1" << seq1 << endl;
     cout << "Best Seq2" << seq2 << endl;
+}
