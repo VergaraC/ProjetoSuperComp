@@ -17,15 +17,15 @@ int comparar(char seq1, char seq2){
 }
 int compararSeqs(string seq1, string seq2){
     int res = 0;
-    for(int i = 0; i < int(seq1.size()); i++){
+    for(int i = 0; i <= int(seq1.size()); i++){
         res += comparar(seq1[i], seq2[i]);
     }
     return res;
 }
-vector<string> getSubStrings(string A, int n){
+vector<string> getSubStrings(string A){
     vector<string> all;
-    for(int i = 0; i < n; i++){
-        for (int j = i+1; j < n; j++ ){
+    for(int i = 0; i <= int(A.size()); i++){
+        for (int j = 0; j < int(A.size()); j++ ){
             all.push_back(A.substr(i,j));
         }
     }
@@ -34,7 +34,6 @@ vector<string> getSubStrings(string A, int n){
 int main(){
     int len1, len2;
     string seq1, seq2;
-    //string seq11, seq22;
 
     cin >> len1;
     cin >> len2;
@@ -42,27 +41,27 @@ int main(){
     cin >> seq1;
     cin >> seq2;
     
-    vector<string> seq1All = getSubStrings(seq1,len1);
-    vector<string> seq2All = getSubStrings(seq2,len2);
+    vector<string> seq1All = getSubStrings(seq1);
+    vector<string> seq2All = getSubStrings(seq2);
 
     int score = 0;
     int bestScore = 0;
 
     string best1, best2;
     
-    for(auto&seq1: seq1All){
-        for(auto&seq2: seq2All){
-            if(seq2.length() == seq1.length()){
-                score = compararSeqs(seq1, seq2);
+    for(auto&s1: seq1All){
+        for(auto&s2: seq2All){
+            if(s2.length() == s1.length()){
+                score = compararSeqs(s1, s2);
                 if(score > bestScore){
                     bestScore = score;
-                    best1 = seq1;
-                    best2 = seq2;
+                    best1 = s1;
+                    best2 = s2;
                 }
             }
         }
     }
-    cout << "Max Score" << bestScore << endl;
-    cout << "Best Seq1" << seq1 << endl;
-    cout << "Best Seq2" << seq2 << endl;
+    cout << "Max Score:  " << bestScore << endl;
+    cout << "Best Seq1:  " << best1 << endl;
+    cout << "Best Seq2:  " << best2 << endl;
 }
