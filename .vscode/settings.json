@@ -3,5 +3,6 @@
         "vector": "cpp",
         "xstring": "cpp",
         "random": "cpp"
-    }
+    },
+    "git.ignoreLimitWarning": true
 }
