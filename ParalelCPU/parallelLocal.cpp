@@ -16,13 +16,13 @@ int comparar(char seq1, char seq2){
         return 2;
     }else{
         return -1; //mismatch ou gap
-    };
-};
+    }
+}
 int compararSeqs(string seq1, string seq2){
     int res = 0;
     for(int i = 0; i < int(seq1.size()); i++){
         res += comparar(seq1[i], seq2[i]);
-    };
+    }
     return res;
 }
 int main(){
@@ -55,22 +55,24 @@ int main(){
     randomEngs.push_back(gen8);
 
     int bestScore = -(len1+len2);
-    int atualScore;
+    
 
     time_t start, end;
     uniform_int_distribution<int> d1(1,len1);
     uniform_int_distribution<int> d2(1,len2);
     uniform_int_distribution<int> dsqrt(20,sqrt(2*len1*len2));
 
-    int iMax = 10000;
+    int iMax = 10;
     string subSeq1;
     string subSeq2;
     int p, k;
     
 
-    #pragma omp parallel for shared(seq11, seq22, bestScore) firstprivate(a, b){
+    #pragma omp parallel for shared(seq11, seq22, bestScore) firstprivate(seq1, seq2)
          
         for(int i = 0; i<iMax; i++){
+            int atualScore;
+            //cout << "i: " << i << endl;
             if(len1>len2){ 
                 k = d2(randomEngs[i%8]);
             }
@@ -84,33 +86,28 @@ int main(){
                 atualScore = 0;
                 int j = d(randomEngs[i%8]);
                 subSeq2 = seq2.substr(j, k);
-                /*for(int i2 = 0; i2 < k; i2++){
+                for(int i2 = 0; i2 < k; i2++){
                     if(subSeq1[i2]==subSeq2[i2]){
                         atualScore += 2;
                     }
                     else{
                         atualScore += -1;
-                    } */
+                    } 
                 atualScore += compararSeqs(subSeq1, subSeq2);
-                //cout << "Score: " << atualScore << endl;
-                //}
+                cout << "Score: " << atualScore << endl;
+                }
 
-                #pragma omp critical{
-                    cout << "crit";
+                #pragma omp critical
                     if(atualScore > bestScore){
                         bestScore = atualScore;
                         seq11 = subSeq1;
                         seq22 = subSeq2;
-                        cout << "BestScore:  ";
+                        cout << " New BestScore:  ";
                         cout << bestScore << endl;
                     }
-                }
+                
             }
-        }
+        
     }
 }
-
-    
-    
-
 
