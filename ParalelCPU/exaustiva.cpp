@@ -51,7 +51,7 @@ int main(){
     int bestScore = -(len1+len2);
 
     string best1, best2;
-    
+    #pragma omp parallel for reduction(max:bestScore) 
     for(auto&s1: seq1All){
         for(auto&s2: seq2All){
             if(s2.length() == s1.length()){
