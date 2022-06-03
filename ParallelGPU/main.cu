@@ -37,14 +37,14 @@ struct comparar1{
     char c;
     comparar1(int c_) : c(c_){};
     __host__ __device__
-    int operator()(const thrust::tuple<char, int, int>& v){
+    int operator()(const thrust::tuple<char, int, int>& a){
 
-        if(c == thrust::get<0>(v)){
-            diagonal = thrust::get<1>(v) + 2;
+        if(c == thrust::get<0>(a)){
+            diagonal = thrust::get<1>(a) + 2;
         }else{
-            diagonal = thrust::get<1>(v) - 1;
+            diagonal = thrust::get<1>(a) - 1;
         }
-        cima = thrust::get<2>(v) - 1;
+        cima = thrust::get<2>(a) - 1;
         if ( diagonal > 0 && diagonal > cima ){
             return diagonal;
         }else if( cima > 0 && cima > diagonal){
@@ -90,43 +90,44 @@ int main(){
     //thrust::fill(mat2.begin(), mat2.end(), 0);
     cout << "Preparação GPU feita"<< endl;
     //Prep Substring
-    int lenMin = -1;
+    int lenMin = 1;
     int lenMax;
     if(len1 > len2){
         lenMax = len2;
     }else{
         lenMax = len1;
     }
+    thrust::fill(mat2.begin(), mat2.end(), 0);
+    
     while(lenMax>= lenMin && lenMax > 1){
-            for(int i1 = 0; i1 <= (len1 + 1 - lenMax) ; i1++){
-                cout << i1 << endl;
-                for(int i2 = 0; i2 <= (len2 + 1 - lenMax); i2++){
-                    thrust::fill(mat1.begin(), mat1.end(), 0);
+        for(int i1 = 0; i1 <= (len1 + 1 - lenMax) ; i1++){
+            cout << i1 << endl;
+            for(int i2 = 0; i2 <= (len2 + 1 - lenMax); i2++){
+                thrust::fill(mat1.begin(), mat1.end(), 0);
 
-                    for(int i3 = 1; i3 < lenMax+1; i3++){
-                        thrust::transform(thrust::make_zip_iterator(thrust::make_tuple(seq2G.begin()+1 + i2, mat1.begin(), mat1.begin()+1)),
-                                            thrust::make_zip_iterator(thrust::make_tuple(seq2G.end() + 1 + i2 + lenMax, mat1.begin() + lenMax,mat1.begin() + lenMax + 1)),
-                                            mat2.begin() + 1,
-                                            comparar1(seq1G[i1]));
+                for(int i3 = 0; i3 < lenMax+1; i3++){
+                    thrust::transform(thrust::make_zip_iterator(thrust::make_tuple(seq2G.begin()+1 + i2, mat1.begin(), mat1.begin()+1)),
+                                        thrust::make_zip_iterator(thrust::make_tuple(seq2G.end() + 1 + i2 + lenMax, mat1.begin() + lenMax,mat1.begin() + lenMax + 1)),
+                                        mat2.begin() + 1,
+                                        comparar1(seq1G[i3]));
 
-                        //cout << "Transform Feito" << endl;
+                    //cout << "Transform Feito" << endl;
 
-                        thrust::inclusive_scan(mat2.begin(), mat2.begin() + lenMax, mat1.begin(), comparar2());
+                    thrust::inclusive_scan(mat2.begin(), mat2.begin() + lenMax, mat1.begin(), comparar2());
 
-                        scoreAtual = thrust::reduce(mat1.begin(), mat1.begin() + lenMax, 0, thrust::maximum<int>());
-                        
-                        if(scoreAtual > bestScore){
-                            bestScore = scoreAtual;
-                            cout << "New Best: " << bestScore << endl;
-                        }
+                    scoreAtual = thrust::reduce(mat1.begin(), mat1.begin() + lenMax, 0, thrust::maximum<int>());
+                    
+                    if(scoreAtual > bestScore){
+                        bestScore = scoreAtual;
+                        cout << "New Best: " << bestScore << endl;
                     }
                 }
             }
-            lenMax --;
-            lenMin = 1 + (bestScore/2); //se n for no min isso ele vais er menor ou igual
-            lenMax --;
-            cout << "Best Score"<< bestScore << endl;
-
+        }
+        lenMax --;
+        lenMin = 1 + (bestScore/2); //se n for no min isso ele vai ser menor ou igual
+        lenMax --;
+        cout << "Best Score"<< bestScore << endl;
    
     }
     cout << "Best Score"<< bestScore << endl;
