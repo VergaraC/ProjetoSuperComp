@@ -41,7 +41,7 @@ int main(){
     default_random_engine generator(seed);
     uniform_int_distribution<int> distribution(1, len1);
     int k = distribution(generator);
-    cout <<"K:  " << k << endl;
+    ////cout <<"K:  " << k << endl;
 
     //seq 1
     string seq1Random;
@@ -53,18 +53,18 @@ int main(){
     if (index1 > int(seq1.size())){
         index1 = int(seq1.size());
     }
-    cout << "INDEX1: " << index1 << endl;
+    //cout << "INDEX1: " << index1 << endl;
     
     while(int(seq1Random.size())< k){
         seq1Random += seq1[index1];
         index1++;
     }
-    cout << "SEQ1RANDOM: " << seq1Random << endl;
+    //cout << "SEQ1RANDOM: " << seq1Random << endl;
 
 
     //seq 2
     int nSeq2 = distribution(generator);
-    cout << nSeq2 << "Sequencias de B a serem geradas"<< endl;
+    //cout << nSeq2 << "Sequencias de B a serem geradas"<< endl;
 
     vector<string> subSeq2Vector; 
     int bestScore = 0;
@@ -84,7 +84,7 @@ int main(){
             subSeq2 += seq2[index2];
             index2++;
         }
-        cout << i << "  SUBSEQ2: " << subSeq2 << endl;
+        //cout << i << "  SUBSEQ2: " << subSeq2 << endl;
         subSeq2Vector.push_back(subSeq2);
 
         //score pra cada seq2
@@ -94,11 +94,11 @@ int main(){
             bestScoreIndex = i;
         }
     }
-    cout << endl;
-    cout << endl;
-    cout << "BEST SCORE: " << bestScore << endl;
-    cout << "Seq 1 utilizada: " << seq1Random << endl;
-    cout << "Melhor Seq2  " << subSeq2Vector[bestScoreIndex] << endl;
+    //cout << endl;
+    //cout << endl;
+    //cout << "BEST SCORE: " << bestScore << endl;
+    //cout << "Seq 1 utilizada: " << seq1Random << endl;
+    //cout << "Melhor Seq2  " << subSeq2Vector[bestScoreIndex] << endl;
 
 
     return 0;

@@ -61,7 +61,7 @@ int main(){
             }
         }
     }
-    cout << "Max Score:  " << bestScore << endl;
-    cout << "Best Seq1:  " << best1 << endl;
-    cout << "Best Seq2:  " << best2 << endl;
+    //cout << "Max Score:  " << bestScore << endl;
+    //cout << "Best Seq1:  " << best1 << endl;
+    //cout << "Best Seq2:  " << best2 << endl;
 }
